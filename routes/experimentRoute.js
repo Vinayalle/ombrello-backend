@@ -1,0 +1,17 @@
+const express=require("express");
+const experimentController = require('../controllers/experimentController');
+const verifyAdminToken=require('../middleware/verifyAdminToken');
+const verifyUserToken=require('../middleware/verifyUserToken');
+const router=express.Router();
+router.post('/add',verifyAdminToken,experimentController.addExperiment);
+// router.get('/limit=2',experimentController.getExperiments);
+router.get('/',experimentController.getExperiments);
+router.get('/home',experimentController.getTotalExperiments);
+router.get('/:id',experimentController.getExperiment);
+router.patch('/:id/like',verifyUserToken,experimentController.updateLikes);
+router.get('/:id',experimentController.getExperiment);
+router.get('/:className/:subjectName/:experimentName',experimentController.getExperimentByFilter);
+router.get('/:className/:subjectName/',experimentController.getExperimentByFilterByCategory);
+router.put('/:id',verifyAdminToken,experimentController.updateExperiment);
+router.delete('/:id',experimentController.deleteExperiment);
+module.exports=router;

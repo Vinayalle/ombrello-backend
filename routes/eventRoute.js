@@ -1,0 +1,10 @@
+const express=require("express");
+const eventController = require('../controllers/eventController');
+const verifyAdminToken=require('../middleware/verifyAdminToken');
+const router=express.Router();
+router.post('/add',verifyAdminToken,eventController.addEvent);
+router.get('/',eventController.getEvents);
+router.get('/:id',eventController.getEvent);
+router.put('/:eventId',verifyAdminToken,eventController.updateEvent);
+router.delete('/:id',eventController.deleteEvent);
+module.exports=router;

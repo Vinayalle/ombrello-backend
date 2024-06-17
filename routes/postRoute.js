@@ -1,0 +1,10 @@
+const express=require("express");
+const postController = require('../controllers/postController');
+const verifyAdminToken=require('../middleware/verifyAdminToken');
+const router=express.Router();
+router.post('/add',verifyAdminToken,postController.addPost);
+router.get('/',postController.getPosts);
+router.get('/:id',postController.getPost);
+router.put('/:id',verifyAdminToken,postController.updatePost);
+router.delete('/:id',postController.deletePost);
+module.exports=router;

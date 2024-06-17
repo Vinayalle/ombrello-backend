@@ -1,0 +1,10 @@
+const express=require("express");
+const webinarRegisterController = require('../controllers/webinarRegisterController');
+const verifyAdminToken=require('../middleware/verifyAdminToken');
+const router=express.Router();
+router.post('/register',webinarRegisterController.addWebinar);
+router.get('/',webinarRegisterController.getWebinars);
+// router.get('/:id',eventController.getEvent);
+// router.put('/:eventId',verifyAdminToken,eventController.updateEvent);
+router.delete('/:id',webinarRegisterController.deleteWebinar);
+module.exports=router;
