@@ -27,4 +27,4 @@ jobs:
       - name: Delete old container
         run: docker rm -f ombrello-backend-app-container
       - name: Run Docker Container
-        run: docker run -d -p 4000:4000 --name ombrello-backend-app-container
+        run: docker run -d -p 4000:4000 --name ombrello-backend-app-container integrationninjas/ombrello-backend:latest
