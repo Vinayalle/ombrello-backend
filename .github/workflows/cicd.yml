@@ -14,17 +14,17 @@ jobs:
       - name: Login to docker hub
         run: echo "Ombrello123$12$" | docker login -u "vinny143" --password-stdin
       - name: Build Docker Image
-        run: docker build -t integrationninjas/ombrello-backend .
+        run: docker build -t vinny143/ombrello-backend .
       - name: Publish Image to docker hub
-        run: docker push integrationninjas/ombrello-backend:latest
+        run: docker push vinny143/ombrello-backend:latest
 
   deploy:
     needs: build
     runs-on: self-hosted
     steps:
       - name: Pull image from docker hub
-        run: docker pull integrationninjas/ombrello-backend:latest
+        run: docker pull vinny143/ombrello-backend:latest
       - name: Delete old container
         run: docker rm -f ombrello-backend-app-container
       - name: Run Docker Container
-        run: docker run -d -p 4000:4000 --name ombrello-backend-app-container integrationninjas/ombrello-backend:latest
+        run: docker run -d -p 4000:4000 --name ombrello-backend-app-container vinny143/ombrello-backend:latest
