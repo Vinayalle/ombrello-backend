@@ -50,10 +50,13 @@ const PORT=4000;
 
 
 
+
 app.use('/home',(req,res)=>{
     res.send("<h2>Ombrello</h2>");
 })
-
+app.get('/', (req, res) => {
+    res.send('Hello World, from express');
+})
 
 app.listen(PORT,()=>{
     console.log(`Server Running At ${PORT}`);
