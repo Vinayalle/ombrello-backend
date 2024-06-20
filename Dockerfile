@@ -1,14 +1,5 @@
-# FROM node:alpine3.18
-# WORKDIR /app
-# COPY package.json ./
-# RUN npm install
-# COPY . .
-# EXPOSE 4000
-# CMD [ "npm", "start" ]
-
-
-# Use an official Node.js runtime as a parent image
-FROM node:14
+# Use the latest Node.js LTS version
+FROM node:18
 
 # Set the working directory
 WORKDIR /usr/src/app
@@ -16,8 +7,10 @@ WORKDIR /usr/src/app
 # Copy the package.json and package-lock.json files
 COPY package*.json ./
 
-# Install dependencies, including nodemon
+# Install dependencies
 RUN npm install
+
+# Install nodemon globally
 RUN npm install -g nodemon
 
 # Copy the rest of your application’s code
