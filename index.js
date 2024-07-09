@@ -27,7 +27,15 @@ const productRoutes=require('./routes/productRoute');
 const eventRoutes=require('./routes/eventRoute');
 // const otpRoutes=require('./routes/otpRoute');
 const bodyParser=require('body-parser');
-app.use(cors());
+
+const corsOptions = {
+    origin: 'http://3.106.124.101:5000',
+    methods: 'GET, POST, PUT, DELETE, OPTIONS',
+    allowedHeaders: 'Content-Type, Authorization'
+  };
+  
+  app.use(cors(corsOptions));
+
 app.use(bodyParser.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
