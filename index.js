@@ -27,9 +27,7 @@ const productRoutes=require('./routes/productRoute');
 const eventRoutes=require('./routes/eventRoute');
 // const otpRoutes=require('./routes/otpRoute');
 const bodyParser=require('body-parser');
-app.use(cors({
-    origin: 'http://3.106.124.101:5000'
-  }));
+app.use(cors());
 app.use(bodyParser.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
