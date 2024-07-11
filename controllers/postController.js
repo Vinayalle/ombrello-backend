@@ -50,6 +50,15 @@ const addPost=async(req,res)=>{
     
 }
 
+
+const getAllPosts = async (req, res) => {
+    try { 
+        const posts = await Post.find();
+        return res.status(200).json(posts);
+    } catch (err) {
+        return res.status(500).json({ error: "Posts not fetched" });
+    }
+}
 const getPosts = async (req, res) => {
     try { 
         const posts = await Post.find({ status: 'published' });
@@ -129,4 +138,4 @@ const deletePost=async(req,res)=>{
 
 }
 
-module.exports={addPost:[upload.single('image'),addPost],getPosts,getPost,updatePost:[upload.single('image'),updatePost],deletePost}
+module.exports={addPost:[upload.single('image'),addPost],getPosts,getPost,getAllPosts,updatePost:[upload.single('image'),updatePost],deletePost}
