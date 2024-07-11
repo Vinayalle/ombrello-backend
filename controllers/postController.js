@@ -30,13 +30,13 @@ const addPost=async(req,res)=>{
    
 
     try{
-        const {name,description,authorname} =req.body;
+        const {name,description,authorname,status} =req.body;
 
         const image=req.file?req.file.filename:undefined;
     const admin=await Admin.findById(req.adminId);
 
         const post=new Post({
-            name ,description,authorname,image,admin:admin._id
+            name ,description,authorname,status,image,admin:admin._id
         })
     
         await post.save();
@@ -50,18 +50,13 @@ const addPost=async(req,res)=>{
     
 }
 
-const getPosts=async(req,res)=>{
-try{ 
-    const posts=await Post.find();
-
-    return res.status(200).json(posts);
-}catch(err){
-    res.status(500).json({error:"post not fetched"})
-}
-   
-
-   
-
+const getPosts = async (req, res) => {
+    try { 
+        const posts = await Post.find({ status: 'published' });
+        return res.status(200).json(posts);
+    } catch (err) {
+        return res.status(500).json({ error: "Posts not fetched" });
+    }
 }
 
 const getPost=async(req,res)=>{
@@ -79,7 +74,7 @@ const updatePost = async (req, res) => {
 
         console.log(postId);
     
-        const { name,description,authorname } = req.body;
+        const { name,description,authorname,status } = req.body;
         
 
         // Check if the experiment exists
@@ -97,6 +92,7 @@ const updatePost = async (req, res) => {
         if (name) posts.name = name;
         if (description) posts.description = description;
         if (authorname) posts.authorname = authorname;
+        if (status) posts.status = status;
         // if (subject) experiments.subject = subject;
         // if (tags) experiments.tags = tags;
         // if (likes) experiments.likes = likes;

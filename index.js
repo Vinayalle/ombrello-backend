@@ -28,13 +28,13 @@ const eventRoutes=require('./routes/eventRoute');
 // const otpRoutes=require('./routes/otpRoute');
 const bodyParser=require('body-parser');
 
-const corsOptions = {
-    origin: 'http://3.106.124.101:5000',
-    methods: 'GET, POST, PUT, DELETE, OPTIONS',
-    allowedHeaders: 'Content-Type, Authorization'
-  };
+// const corsOptions = {
+//     origin: 'http://3.106.124.101:5000',
+//     methods: 'GET, POST, PUT, DELETE, OPTIONS',
+//     allowedHeaders: 'Content-Type, Authorization'
+//   };
   
-  app.use(cors(corsOptions));
+  app.use(cors());
 
 app.use(bodyParser.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -66,6 +66,6 @@ app.get('/', (req, res) => {
     res.send('Hello World, from express');
 })
 
-app.listen(PORT,'0.0.0.0',()=>{
+app.listen(PORT,()=>{
     console.log(`Server Running At ${PORT}`);
 })

@@ -17,6 +17,10 @@ const PostSchema=new mongoose.Schema({
         type:String
        
     },
+    status:{
+        type:String
+       
+    },
     admin:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Admin'
