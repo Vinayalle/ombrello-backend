@@ -74,7 +74,7 @@ try{
 const getTotalExperiments=async(req,res)=>{
     try{ 
         
-        const experiments=await Experiment.find().sort({$natural:-1}).limit(9);
+        const experiments=await Experiment.find().sort({$natural:-1});
     
         return res.status(200).json(experiments);
     }catch(err){
@@ -133,6 +133,32 @@ const getTotalExperiments=async(req,res)=>{
   }
     
     }
+
+
+    
+    const getExperimentByFilterByCategory1 = async (req, res) => {
+      const { classN, subject } = req.params;
+    
+      console.log(`Class Name: ${classN}, Subject Name: ${subject}`);
+      
+      try {
+          const experiments = await Experiment.find({ 
+              selectedClass: classN, 
+              subject: subject 
+          });
+  
+          console.log(experiments);
+  
+          if (experiments.length > 0) {
+              res.json(experiments);
+          } else {
+              res.status(404).json({ message: 'Experiments not found' });
+          }
+      } catch (err) {
+          res.status(500).json({ message: err.message });
+      }
+  };
+  
 
 const getExperiment=async(req,res)=>{
     const experimentId=req.params.id;
@@ -230,4 +256,4 @@ const updateLikes=async(req,res)=>{
 }
 
 
-module.exports={addExperiment:[upload.single('image'),addExperiment],getExperiments,getExperiment,updateExperiment:[upload.single('image'),updateExperiment],deleteExperiment,updateLikes,getTotalExperiments,getExperimentByFilter,getExperimentByFilterByCategory}
+module.exports={addExperiment:[upload.single('image'),addExperiment],getExperiments,getExperiment,updateExperiment:[upload.single('image'),updateExperiment],deleteExperiment,updateLikes,getTotalExperiments,getExperimentByFilter,getExperimentByFilterByCategory,getExperimentByFilterByCategory1}
