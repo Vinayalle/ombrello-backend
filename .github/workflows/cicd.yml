@@ -14,17 +14,17 @@ jobs:
       - name: Login to docker hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p "${{ secrets.DOCKER_PASSWORD }}"
       - name: Build Docker Image
-        run: docker build -t vinny143/ombrello-backend-2 .
+        run: docker build -t vinny143/ombrello-backend .
       - name: Publish Image to docker hub
-        run: docker push vinny143/ombrello-backend-2:latest
+        run: docker push vinny143/ombrello-backend:latest
 
   deploy:
     needs: build
     runs-on: self-hosted
     steps:
       - name: Pull image from docker hub
-        run: docker pull vinny143/ombrello-backend-2:latest
+        run: docker pull vinny143/ombrello-backend:latest
       - name: Delete old container
         run: docker rm -f ombrello-backend-app-container
       - name: Run Docker Container
-        run: docker run -d -p 4000:4000 --name ombrello-backend-app-container vinny143/ombrello-backend-2:latest
+        run: docker run -d -p 4000:4000 --name ombrello-backend-app-container vinny143/ombrello-backend:latest
