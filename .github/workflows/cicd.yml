@@ -33,7 +33,7 @@ jobs:
           chmod 600 /tmp/ec2_key.pem
 
           # SSH into the EC2 instance and deploy the Docker container
-          ssh -o StrictHostKeyChecking=no -i /tmp/ec2_key.pem -t $EC2_USER@$EC2_HOST << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i /tmp/ec2_key.pem $EC2_USER@$EC2_HOST << 'EOF'
             set -e
             
             # Debugging: Echo the image name to see if it's correct
