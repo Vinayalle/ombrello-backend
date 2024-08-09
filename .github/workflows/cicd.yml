@@ -42,8 +42,9 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/ombrello-backend:latest
             
             # Stop and remove any existing container with the same name
-            # docker stop ombrello-backend || true
-            # docker rm ombrello-backend || true
+            docker stop ombrello-backend || true
+            docker rm ombrello-backend || true
+            docker rmi ombrello-backend || true
             
             # Run the new container
             docker run -d --name ombrello-backend -p 4000:4000 ${{ secrets.DOCKER_USERNAME }}/ombrello-backend:latest
