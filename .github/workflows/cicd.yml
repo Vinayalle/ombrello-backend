@@ -34,10 +34,10 @@ jobs:
             set -e
             
             # Debugging: Echo the image name to see if it's correct
-            echo "Image name: $DOCKER_HUB_USERNAME/ombrello-backend:latest"
+            echo "Image name: $DOCKER_USERNAME/ombrello-backend:latest"
             
             # Pull the latest Docker image from Docker Hub
-            sudo docker pull $DOCKER_HUB_USERNAME/ombrello-backend:latest
+            sudo docker pull $DOCKER_USERNAME/ombrello-backend:latest
             
             # Stop and remove any existing container with the same name
             sudo docker stop ombrello-backend || true
