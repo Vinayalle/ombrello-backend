@@ -44,7 +44,7 @@ jobs:
             sudo docker rm ombrello-backend || true
             
             # Run the new container
-            sudo docker run -d --name ombrello-backend -p 4000:4000 $DOCKER_HUB_USERNAME/ombrello-backend:latest
+            sudo docker run -d --name ombrello-backend -p 4000:4000 $DOCKER_USERNAME/ombrello-backend:latest
           EOF
 
           # Clean up the temporary private key file
