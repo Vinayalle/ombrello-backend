@@ -36,18 +36,11 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i /tmp/ec2_key.pem $EC2_USER@$EC2_HOST << 'EOF'
             set -e
             
+            # Create a directory called "check" for testing purposes
+            mkdir -p ~/check
+            
             # Debugging: Echo the image name to see if it's correct
-            echo "Image name: $DOCKER_USERNAME/ombrello-backend:latest"
-            
-            # Pull the latest Docker image from Docker Hub
-            docker pull $DOCKER_USERNAME/ombrello-backend:latest
-            
-            # Stop and remove any existing container with the same name
-            docker stop ombrello-backend || true
-            docker rm ombrello-backend || true
-            
-            # Run the new container
-            docker run -d --name ombrello-backend -p 4000:4000 $DOCKER_USERNAME/ombrello-backend:latest
+            # echo "Image name: $DOCKER_USERNAME/ombrello-backend:latest"
           EOF
 
           # Clean up the temporary private key file
