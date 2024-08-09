@@ -46,8 +46,8 @@ jobs:
             sudo docker pull $DOCKER_USERNAME/ombrello-backend:latest
             
             # Stop and remove any existing container with the same name
-            sudo docker stop ombrello-backend || true
-            sudo docker rm ombrello-backend || true
+            # sudo docker stop ombrello-backend || true
+            # sudo docker rm ombrello-backend || true
             
             # Run the new container
             sudo docker run -d --name ombrello-backend -p 4000:4000 $DOCKER_USERNAME/ombrello-backend:latest
