@@ -37,7 +37,7 @@ jobs:
             set -e
             
             # Debugging: Echo the image name to see if it's correct
-            echo "Image name: $DOCKER_USERNAME/ombrello-backend:latest"
+            # echo "Image name: $DOCKER_USERNAME/ombrello-backend:latest"
             
             # Log in to Docker Hub
             echo "$DOCKER_PASSWORD" | sudo docker login -u $DOCKER_USERNAME --password-stdin
