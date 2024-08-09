@@ -6,25 +6,51 @@ on:
       - master
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Source
         uses: actions/checkout@v4
-      - name: Login to docker hub
+
+      - name: Login to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p "${{ secrets.DOCKER_PASSWORD }}"
+
       - name: Build Docker Image
-        run: docker build -t vinny143/ombrello-backend .
-      - name: Publish Image to docker hub
+        run: docker build -t vinny143/ombrello-backend:latest .
+
+      - name: Publish Image to Docker Hub
         run: docker push vinny143/ombrello-backend:latest
 
-  deploy:
-    needs: build
-    runs-on: self-hosted
-    steps:
-      - name: Pull image from docker hub
-        run: docker pull vinny143/ombrello-backend:latest
-      - name: Delete old container
-        run: docker rm -f ombrello-backend-app-container
-      - name: Run Docker Container
-        run: docker run -d -p 4000:4000 --name ombrello-backend-app-container vinny143/ombrello-backend:latest
+      - name: Deploy Docker image to EC2
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+          EC2_KEY: ${{ secrets.EC2_KEY }}
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          # Save the private key to a temporary file and set permissions
+          echo "$EC2_KEY" > /tmp/ec2_key.pem
+          chmod 600 /tmp/ec2_key.pem
+          
+          # SSH into the EC2 instance and deploy the Docker container
+          ssh -o StrictHostKeyChecking=no -i /tmp/ec2_key.pem $EC2_USER@$EC2_HOST << 'EOF'
+            set -e
+            
+            # Log in to Docker Hub
+            # echo "$DOCKER_HUB_PASSWORD" | sudo docker login -u $DOCKER_HUB_USERNAME --password-stdin
+            
+            # Pull the latest Docker image from Docker Hub
+            sudo docker pull $DOCKER_HUB_USERNAME/ombrello-backend:latest
+            
+            # Stop and remove any existing container with the same name
+            sudo docker stop ombrello-backend || true
+            sudo docker rm ombrello-backend || true
+            
+            # Run the new container
+            sudo docker run -d --name ombrello-backend -p 4000:4000 $DOCKER_HUB_USERNAME/ombrello-backend:latest
+          EOF
+          
+          # Clean up the temporary private key file
+          rm -f /tmp/ec2_key.pem
