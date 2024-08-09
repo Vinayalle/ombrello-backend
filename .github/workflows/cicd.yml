@@ -25,7 +25,7 @@ jobs:
       - name: Deploy Docker image to EC2
         env:
           EC2_HOST: ${{ secrets.EC2_HOST }}
-          EC2_USER: ${{ secrets.EC2_USER }}
+          # EC2_USER: ${{ secrets.EC2_USER }}
           EC2_KEY: ${{ secrets.EC2_KEY }}
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
@@ -39,17 +39,17 @@ jobs:
             set -e
             
             # Log in to Docker Hub
-            # echo "$DOCKER_HUB_PASSWORD" | sudo docker login -u $DOCKER_HUB_USERNAME --password-stdin
+            # echo "$DOCKER_PASSWORD" | sudo docker login -u $DOCKER_USERNAME --password-stdin
             
             # Pull the latest Docker image from Docker Hub
-            sudo docker pull $DOCKER_HUB_USERNAME/ombrello-backend:latest
+            sudo docker pull $DOCKER_USERNAME/ombrello-backend:latest
             
             # Stop and remove any existing container with the same name
             sudo docker stop ombrello-backend || true
             sudo docker rm ombrello-backend || true
             
             # Run the new container
-            sudo docker run -d --name ombrello-backend -p 4000:4000 $DOCKER_HUB_USERNAME/ombrello-backend:latest
+            sudo docker run -d --name ombrello-backend -p 4000:4000 $DOCKER_USERNAME/ombrello-backend:latest
           EOF
           
           # Clean up the temporary private key file
