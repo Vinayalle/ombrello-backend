@@ -40,7 +40,7 @@ jobs:
             # echo "Image name: $DOCKER_USERNAME/ombrello-backend:latest"
             
             # Log in to Docker Hub
-            echo "$DOCKER_PASSWORD" | sudo docker login -u $DOCKER_USERNAME --password-stdin
+            # echo "$DOCKER_PASSWORD" | sudo docker login -u $DOCKER_USERNAME --password-stdin
             
             # Pull the latest Docker image from Docker Hub
             sudo docker pull $DOCKER_USERNAME/ombrello-backend:latest
