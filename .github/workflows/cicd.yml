@@ -8,23 +8,21 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Source
         uses: actions/checkout@v4
-      
+
       - name: Build Docker Image
         run: |
-          # Log in to Docker Hub
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p "${{ secrets.DOCKER_PASSWORD }}"
-          
-          # Build and push the Docker image
           docker build -t ${{ secrets.DOCKER_USERNAME }}/ombrello-backend:latest .
           docker push ${{ secrets.DOCKER_USERNAME }}/ombrello-backend:latest
-      
+
       - name: Deploy Docker Image to EC2
         env:
           EC2_HOST: ${{ secrets.EC2_HOST }}
-          EC2_USER: ubuntu  # Replace with your EC2 username if different
+          EC2_USER: ${{ secrets.EC2_USER }}
           EC2_KEY: ${{ secrets.EC2_KEY }}
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: |
@@ -33,24 +31,22 @@ jobs:
           chmod 600 /tmp/ec2_key.pem
 
           # SSH into the EC2 instance and deploy the Docker container
-          ssh -o StrictHostKeyChecking=no -i /tmp/ec2_key.pem -t $EC2_USER@$EC2_HOST << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i /tmp/ec2_key.pem $EC2_USER@$EC2_HOST << EOF
             set -e
             
             # Debugging: Echo the image name to see if it's correct
-            # echo "Image name: $DOCKER_USERNAME/ombrello-backend:latest"
-            
-            # Log in to Docker Hub
-            # echo "$DOCKER_PASSWORD" | sudo docker login -u $DOCKER_USERNAME --password-stdin
+            echo "Docker Username: $DOCKER_USERNAME"
+            echo "Image name: $DOCKER_USERNAME/ombrello-backend:latest"
             
             # Pull the latest Docker image from Docker Hub
-            sudo docker pull $DOCKER_USERNAME/ombrello-backend:latest
+            docker pull $DOCKER_USERNAME/ombrello-backend:latest
             
             # Stop and remove any existing container with the same name
-            # sudo docker stop ombrello-backend || true
-            # sudo docker rm ombrello-backend || true
+            docker stop ombrello-backend || true
+            docker rm ombrello-backend || true
             
             # Run the new container
-            sudo docker run -d --name ombrello-backend -p 4000:4000 $DOCKER_USERNAME/ombrello-backend:latest
+            docker run -d --name ombrello-backend -p 4000:4000 $DOCKER_USERNAME/ombrello-backend:latest
           EOF
 
           # Clean up the temporary private key file
