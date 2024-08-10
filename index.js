@@ -63,7 +63,7 @@ app.use('/home',(req,res)=>{
     res.send("<h2>Ombrello</h2>");
 })
 app.get('/', (req, res) => {
-    res.send('Hello World, from ombrello backend');
+    res.send('welcome to ombrello backend');
 })
 
 app.listen(PORT,()=>{
